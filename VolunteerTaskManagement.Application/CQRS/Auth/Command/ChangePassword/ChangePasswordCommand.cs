@@ -1,10 +1,10 @@
 ﻿using Base.Application.Contracts;
 using Base.Application.Contracts.DTOs.Common;
 using Base.Application.Exceptions;
-using VolunteerTaskManagement.Application.Contracts.Repositories;
 using VolunteerTaskManagement.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Auth
 {

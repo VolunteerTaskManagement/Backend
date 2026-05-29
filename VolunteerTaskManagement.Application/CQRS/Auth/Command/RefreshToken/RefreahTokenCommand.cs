@@ -1,9 +1,9 @@
 ﻿using Base.Application.Contracts;
 using Base.Application.Contracts.DTOs;
 using Base.Application.Contracts.DTOs.Common;
-using VolunteerTaskManagement.Application.Contracts.Repositories;
 using VolunteerTaskManagement.Domain.Entities;
 using MediatR;
+using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Auth
 {

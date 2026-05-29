@@ -1,8 +1,8 @@
 ﻿using Base.Application.Contracts;
-using VolunteerTaskManagement.Application.Contracts.Repositories;
 using VolunteerTaskManagement.Domain.Entities;
 using FluentValidation;
 using System.Text.RegularExpressions;
+using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Auth
 {
