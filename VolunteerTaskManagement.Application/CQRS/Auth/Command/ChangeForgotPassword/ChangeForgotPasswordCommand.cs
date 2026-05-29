@@ -3,7 +3,7 @@ using Base.Application.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Base.Application.Contracts.DTOs.Common;
 using VolunteerTaskManagement.Domain.Entities;
-using VolunteerTaskManagement.Application.Contracts.Repositories;
+using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Auth
 {

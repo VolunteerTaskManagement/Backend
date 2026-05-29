@@ -5,8 +5,8 @@ using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Infrastructure.Implementation.Repositories
 {
-    public class UserRepository(IVolunteerTaskManagementContext dbContext)
-        : Repository<User, IVolunteerTaskManagementContext>(dbContext), IUserRepository
+    public class NeighborhoodRepository(IVolunteerTaskManagementContext dbContext)
+        : Repository<Neighborhood, IVolunteerTaskManagementContext>(dbContext), INeighborhoodRepository
     {
     }
 }

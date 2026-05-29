@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+
+using System.Reflection.Metadata;
+
 //using Microsoft.OpenApi.Models;
 using System.Text;
 
@@ -75,7 +79,23 @@ namespace Base.Api.Registration
         private static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddOpenApi();
-            services.AddSwaggerGen();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT"
+                });
+
+                options.AddSecurityRequirement((document) => new OpenApiSecurityRequirement
+                {
+                    [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+                });
+            });
         } 
     }
 }

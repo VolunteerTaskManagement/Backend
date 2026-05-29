@@ -16,7 +16,7 @@ namespace Base.Api.Registration
                 {
                     options.Servers =
                     [
-                        new ScalarServer("http://localhost:8080")
+                        new ScalarServer("https://localhost:7121/")
                     ];
                 });
             }
