@@ -10,5 +10,6 @@ namespace VolunteerTaskManagement.Infrastructure.Implementation
     {
         public IUserRepository Users => serviceProvider.GetService<IUserRepository>();
         public INeighborhoodRepository Neighborhoods => serviceProvider.GetService<INeighborhoodRepository>();
+        public ITaskRepository Tasks => serviceProvider.GetService<ITaskRepository>();
     }
 }

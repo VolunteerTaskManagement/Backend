@@ -16,7 +16,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Auth
         public string Password { get; set; }
     }
 
-    public class LoginCommandHandler(IJwtManager jwtManager, IGenericRepository<User, IVolunteerTaskManagementContext> uow, IHttpContextAccessor httpContextAccessor)
+    public class LoginCommandHandler(IJwtManager jwtManager, IGenericRepository<User, IVolunteerTaskManagementContext> uow)
         : IRequestHandler<LoginCommand, Result<UserDTO>>
     {
         public async Task<Result<UserDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)

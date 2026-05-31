@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 namespace VolunteerTaskManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(VolunteerTaskManagementContext))]
-    partial class VolunteerTaskManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20260531172430_ChangeTaskModel")]
+    partial class ChangeTaskModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,6 +176,57 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.ToTable("Regions", "VolunteerTaskManagement");
                 });
 
+            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.Task", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("LastModifyBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModifyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("NeighborhoodId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PicName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.PrimitiveCollection<string>("Skills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasComment("عنوان");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NeighborhoodId");
+
+                    b.ToTable("Tasks", "VolunteerTaskManagement");
+                });
+
             modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -278,63 +332,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.ToTable("UserTasks", "VolunteerTaskManagement");
                 });
 
-            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.VolunteerTask", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<long?>("LastModifyBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("LastModifyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("NeighborhoodId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PicName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("Skills")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasComment("عنوان");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NeighborhoodId");
-
-                    b.ToTable("Tasks", "VolunteerTaskManagement");
-                });
-
             modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.City", b =>
                 {
                     b.HasOne("VolunteerTaskManagement.Domain.Entities.Province", "Province")
@@ -368,9 +365,20 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.Navigation("City");
                 });
 
+            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.Task", b =>
+                {
+                    b.HasOne("VolunteerTaskManagement.Domain.Entities.Neighborhood", "Neighborhood")
+                        .WithMany()
+                        .HasForeignKey("NeighborhoodId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Neighborhood");
+                });
+
             modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.UserTask", b =>
                 {
-                    b.HasOne("VolunteerTaskManagement.Domain.Entities.VolunteerTask", "Task")
+                    b.HasOne("VolunteerTaskManagement.Domain.Entities.Task", "Task")
                         .WithMany("UserTasks")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -387,23 +395,12 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.Navigation("Volunteer");
                 });
 
-            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.VolunteerTask", b =>
-                {
-                    b.HasOne("VolunteerTaskManagement.Domain.Entities.Neighborhood", "Neighborhood")
-                        .WithMany()
-                        .HasForeignKey("NeighborhoodId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Neighborhood");
-                });
-
-            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.User", b =>
+            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.Task", b =>
                 {
                     b.Navigation("UserTasks");
                 });
 
-            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.VolunteerTask", b =>
+            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.User", b =>
                 {
                     b.Navigation("UserTasks");
                 });

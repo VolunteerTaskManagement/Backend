@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace VolunteerTaskManagement.Infrastructure.Persistence.Configs
 {
-    public class TaskConfig : BaseEntityConfig<Domain.Entities.Task>
+    public class TaskConfig : BaseEntityConfig<Domain.Entities.VolunteerTask>
     {
-        public override void Configure(EntityTypeBuilder<Domain.Entities.Task> builder)
+        public override void Configure(EntityTypeBuilder<Domain.Entities.VolunteerTask> builder)
         {
             builder.ToTable("Tasks", "VolunteerTaskManagement");
 
