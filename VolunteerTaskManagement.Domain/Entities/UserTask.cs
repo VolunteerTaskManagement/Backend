@@ -8,6 +8,6 @@ namespace VolunteerTaskManagement.Domain.Entities
         public User Volunteer { get; set; }
 
         public long TaskId { get; set; }
-        public Task Task { get; set; }
+        public VolunteerTask Task { get; set; }
     }
 }

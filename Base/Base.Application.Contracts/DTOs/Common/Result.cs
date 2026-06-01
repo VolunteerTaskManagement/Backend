@@ -34,6 +34,30 @@
 
         public static Result<TValue> Failure<TValue>(Error error) => new(default, false, error);
 
+        public static Result Failure(string message)
+        {
+            return new(false, new Error("400", message))
+            {
+                Message = message
+            };
+        }
+
+        public static Result NotFound(string message = "رکورد موردنظر یافت نشد")
+        {
+            return new Result(false, new Error("404", message))
+            {
+                Message = message
+            };
+        }
+
+        public static Result<TValue> NotFound<TValue>(string message = "رکورد موردنظر یافت نشد")
+        {
+            return new Result<TValue>(default, false, new Error("404", message))
+            {
+                Message = message
+            };
+        }
+
         public static Result<TValue> Create<TValue>(TValue value) => value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
     }
 

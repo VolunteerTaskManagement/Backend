@@ -3,13 +3,21 @@ using VolunteerTaskManagement.Domain.Enums;
 
 namespace VolunteerTaskManagement.Domain.Entities
 {
-    public class Task : BaseEntity
+    public class VolunteerTask : BaseEntity
     {
         public string Title { get; set; }
 
         public List<Skill> Skills { get; set; }
 
         public int Count { get; set; }
+
+        public string Description { get; set; }
+        
+        public string PicName { get; set; }
+
+        public string Address { get; set; }
+
+        public DateTime StartDate { get; set; }
 
         // TODO: State Management
 
