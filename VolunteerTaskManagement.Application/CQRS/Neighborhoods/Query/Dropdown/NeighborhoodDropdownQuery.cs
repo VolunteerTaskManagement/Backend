@@ -11,7 +11,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Neighborhoods
 {
     public class NeighborhoodDropdownQuery : IRequest<Result<List<SelectListDTO>>>
     {
-        public string Title { get; set; }
+        public string? Title { get; set; }
+        public long? CityId { get; set; }
+        public long? RegionId { get; set; }
 
         #region توابع
         public Expression<Func<Neighborhood, bool>> GetFilter()
@@ -20,6 +22,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Neighborhoods
 
             if (!string.IsNullOrEmpty(Title))
                 filter.And(x => x.Title.Contains(Title));
+
+            if (CityId.HasValue)
+                filter.And(x => x.Region.CityId == CityId.Value);
+
+            if (RegionId.HasValue)
+                filter.And(x => x.RegionId == RegionId.Value);
 
             return filter;
         }
