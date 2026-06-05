@@ -42,6 +42,26 @@ namespace VolunteerTaskManagement.Infrastructure.Persistence.Configs
             builder.Property(x => x.RefreshTokenExpiryTime)
                 .HasComment("انقضای رفرش توکن");
 
+            builder.Property(x => x.BirthDate)
+                .HasComment("تاریخ تولد");
+
+            builder.Property(x => x.PicName)
+                .HasMaxLength(100)
+                .HasComment("نام فایل تصویر پروفایل");
+
+            builder.Property(x => x.PhoneNumber)
+                .HasComment("شماره تلفن");
+
+            builder.HasOne(x => x.Neighborhood)
+                  .WithMany()
+                  .HasForeignKey(x => x.NeighborhoodId);
+
+            builder.Property(x => x.Skills)
+                   .HasComment("مهارت ها");
+
+
+
+
             //builder.HasIndex(x => x.Email)
             //    .IsUnique()
             //    .HasFilter("[Email] IS NOT NULL");
