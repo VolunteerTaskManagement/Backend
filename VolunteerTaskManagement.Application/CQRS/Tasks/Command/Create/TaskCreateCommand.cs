@@ -5,6 +5,7 @@ using MediatR;
 using Base.Application.Contracts.DTOs.Common;
 using VolunteerTaskManagement.Application.Contracts;
 using Base.Application.Contracts;
+using VolunteerTaskManagement.Domain.Entities.State;
 
 namespace VolunteerTaskManagement.Application.CQRS.Tasks
 {
@@ -56,6 +57,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 if (!isSuccess)
                     return Result.Failure("عکس آپلود نشد. مجددا تلاش کنید");
             }
+            task.State = new RegisterdState();
 
             await uow.Tasks.AddAsync(task);
             await uow.CommitAsync();
