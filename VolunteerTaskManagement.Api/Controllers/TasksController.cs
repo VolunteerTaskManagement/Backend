@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerTaskManagement.Application.CQRS.Tasks;
+using VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm;
 using VolunteerTaskManagement.Domain.Enums;
 
 namespace VolunteerTaskManagement.Api.Controllers
@@ -50,5 +51,30 @@ namespace VolunteerTaskManagement.Api.Controllers
 
             return Ok(Result.Success(result));
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Coordinator")]
+        [Route("start")]
+        public async Task<ActionResult<Result>> Start([FromBody] TaskStartCommand command)
+            => Ok(await Mediator.Send(command));
+
+
+        [HttpPost]
+        [Authorize(Roles = "Coordinator")]
+        [Route("confirm")]
+        public async Task<ActionResult<Result>> Confirm([FromBody] TaskStartCommand command)
+            => Ok(await Mediator.Send(command));
+
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "Coordinator")]
+        [Route("cancel")]
+        public async Task<ActionResult<Result>> Cancel([FromBody] TaskCancelCommand command)
+            => Ok(await Mediator.Send(command));
+
+
+
     }
 }

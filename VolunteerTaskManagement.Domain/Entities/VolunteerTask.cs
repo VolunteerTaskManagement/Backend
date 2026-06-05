@@ -1,4 +1,5 @@
 ﻿using Base.Domain.Entities.Common;
+using VolunteerTaskManagement.Domain.Entities.State;
 using VolunteerTaskManagement.Domain.Enums;
 
 namespace VolunteerTaskManagement.Domain.Entities
@@ -25,5 +26,9 @@ namespace VolunteerTaskManagement.Domain.Entities
         public Neighborhood Neighborhood { get; set; }
 
         public ICollection<UserTask> UserTasks { get; set; }
+
+        public TaskState State { get; set; }
+        public VolunteerTaskStatus Status => State.Status;
+
     }
 }
