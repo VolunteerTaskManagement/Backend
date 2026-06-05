@@ -27,7 +27,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (userTask.Task.Status != Domain.Enums.VolunteerTaskStatus.Registered)
                 return Result.Failure("لفو ثبت نام در این مرحله امکان پذیر نیست!");
 
-            userTask.Task.Count += 1;
+            userTask.Task.VolunteerCount -= 1;
 
             uow.UserTasks.DeleteAsync(userTask);
             await uow.CommitAsync();

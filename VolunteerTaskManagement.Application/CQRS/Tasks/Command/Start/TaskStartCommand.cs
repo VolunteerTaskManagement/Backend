@@ -25,6 +25,10 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
             var task = await uow.Tasks.FirstOrDefaultAsync(x => x.Id == request.Id &&
             x.CreatedBy == userId
             ) ?? throw new Exception("تسک مورد نظر یافت نشد");
+
+            if (task.VolunteerCount < task.Count)
+                throw new Exception("ظرفیت تسک پر نشده است");
+
             task.State.Start(task);
 
             await uow.CommitAsync();

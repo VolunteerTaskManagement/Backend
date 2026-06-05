@@ -46,6 +46,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
     {
         public async Task<Result<ItemListDTO<TaskListDTO>>> Handle(TaskGetListQuery request, CancellationToken cancellationToken)
         {
+            var role = jwtManager.GetRole();
             var userId = jwtManager.GetUserId();
             var sort = "id desc";
             var filter = request.GetFilter();
@@ -57,7 +58,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 PageIndex = request.PageIndex,
                 FilteredCount = await uow.Tasks.CountAsync(filter),
                 Items = await uow.Tasks.GetDTOAsync(
-                    TaskListDTO.Selector(userId!.Value),
+                    TaskListDTO.Selector(userId!.Value, role),
                     filter,
                     orderBy: x => x.OrderBy(sort),
                     skip: (request.PageIndex - 1) * request.PageSize,

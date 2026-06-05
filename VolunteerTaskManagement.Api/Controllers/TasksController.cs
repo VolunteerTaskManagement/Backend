@@ -25,7 +25,7 @@ namespace VolunteerTaskManagement.Api.Controllers
 
         [HttpGet]
         [Route("my")]
-        [Authorize(Roles = "Coordinator")]
+        [Authorize]
         public async Task<ActionResult<Result<ItemListDTO<TaskListDTO>>>> GetMyList([FromQuery] TaskGetMyListQuery command)
             => Ok(await Mediator.Send(command));
 

@@ -62,7 +62,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 PageIndex = request.PageIndex,
                 FilteredCount = await uow.Tasks.CountAsync(filter),
                 Items = await uow.Tasks.GetDTOAsync(
-                    TaskListDTO.Selector(userId!.Value),
+                    TaskListDTO.Selector(userId!.Value, role),
                     filter,
                     orderBy: x => x.OrderBy(sort),
                     skip: (request.PageIndex - 1) * request.PageSize,

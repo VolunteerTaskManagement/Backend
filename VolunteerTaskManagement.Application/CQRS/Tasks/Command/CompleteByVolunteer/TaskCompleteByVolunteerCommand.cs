@@ -1,6 +1,7 @@
 ﻿using Base.Application.Contracts;
 using Base.Application.Contracts.DTOs.Common;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Tasks
@@ -17,8 +18,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         {
             var userId = jwtManager.GetUserId();
 
-            var userTask = await uow.UserTasks.FirstOrDefaultAsync(x => x.TaskId == request.Id && x.VolunteerId == userId)
-                ?? throw new Exception("تسک مورد نظر یافت نشد!");
+            var userTask = await uow.UserTasks.FirstOrDefaultAsync(
+                x => x.TaskId == request.Id && x.VolunteerId == userId,
+                includes: x => x.Include(x => x.Task)) ?? throw new Exception("تسک مورد نظر یافت نشد!");
+
+            if (userTask.Task.Status != Domain.Enums.VolunteerTaskStatus.InProgress)
+                throw new Exception("در این مرحله امکان ثبت پایان کار وجود ندارد!");
 
             userTask.IsCompleted = true;
 

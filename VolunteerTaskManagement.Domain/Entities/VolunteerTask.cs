@@ -11,6 +11,7 @@ namespace VolunteerTaskManagement.Domain.Entities
         public List<Skill> Skills { get; set; }
 
         public int Count { get; set; }
+        public int VolunteerCount { get; set; }
 
         public string Description { get; set; }
         
