@@ -27,5 +27,7 @@ namespace VolunteerTaskManagement.Domain.Entities
 
         [DisplayName("زمان انقضای رفرش توکن")]
         public DateTime? RefreshTokenExpiryTime { get; set; }
+
+        public ICollection<UserTask> UserTasks { get; set; }
     }
 }

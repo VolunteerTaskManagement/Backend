@@ -9,7 +9,7 @@ namespace Base.Infrastructure.Implementation.MinIoService
 {
     public class MinIoService : IMinIoService
     {
-        private const string BucketName = "VolunteerTaskManagement";
+        private const string BucketName = "volunteertaskmanagement";
         private readonly IMinioClient _minio;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IWebHostEnvironment _hostingEnvironment;

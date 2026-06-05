@@ -2,7 +2,7 @@
 
 namespace VolunteerTaskManagement.Application.Contracts.Repositories
 {
-    public interface IVolunteerTaskManagementContext : IDbContext
+    public interface ITaskRepository : IRepository<Domain.Entities.VolunteerTask, IVolunteerTaskManagementContext>
     {
     }
 }

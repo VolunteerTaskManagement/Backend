@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\Configs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Base\Base.Infrastructure\Base.Infrastructure.csproj" />
     <ProjectReference Include="..\VolunteerTaskManagement.Application\VolunteerTaskManagement.Application.csproj" />
     <ProjectReference Include="..\VolunteerTaskManagement.Domain\VolunteerTaskManagement.Domain.csproj" />

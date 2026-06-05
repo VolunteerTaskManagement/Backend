@@ -37,7 +37,7 @@ namespace Base.Infrastructure
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
 
-                var endpoint = configuration["Minio:Endpoint"] ?? "62.60.213.13:9000";
+                var endpoint = configuration["Minio:Endpoint"] ?? "localhost:9000";
                 var accessKey = configuration["Minio:AccessKey"] ?? "minioadmin";
                 var secretKey = configuration["Minio:SecretKey"] ?? "minioadmin";
                 var useSSL = bool.TryParse(configuration["Minio:UseSSL"], out var ssl) && ssl;

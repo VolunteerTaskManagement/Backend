@@ -2,11 +2,11 @@
 using Base.Application.Contracts.DTOs;
 using Base.Application.Contracts.DTOs.Common;
 using Base.Application.Exceptions;
-using VolunteerTaskManagement.Application.Contracts.Repositories;
 using VolunteerTaskManagement.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Auth
 {
@@ -16,7 +16,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Auth
         public string Password { get; set; }
     }
 
-    public class LoginCommandHandler(IJwtManager jwtManager, IGenericRepository<User, IVolunteerTaskManagementContext> uow, IHttpContextAccessor httpContextAccessor)
+    public class LoginCommandHandler(IJwtManager jwtManager, IGenericRepository<User, IVolunteerTaskManagementContext> uow)
         : IRequestHandler<LoginCommand, Result<UserDTO>>
     {
         public async Task<Result<UserDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)
