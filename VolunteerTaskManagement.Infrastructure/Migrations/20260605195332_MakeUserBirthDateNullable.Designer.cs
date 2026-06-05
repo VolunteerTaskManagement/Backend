@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 namespace VolunteerTaskManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(VolunteerTaskManagementContext))]
-    partial class VolunteerTaskManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20260605195332_MakeUserBirthDateNullable")]
+    partial class MakeUserBirthDateNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +278,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
 
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

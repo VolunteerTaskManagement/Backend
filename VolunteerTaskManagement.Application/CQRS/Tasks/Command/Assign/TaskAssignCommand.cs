@@ -18,6 +18,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         {
             var userId = jwtManager.GetUserId();
 
+            var user = await uow.Users.GetByIdAsync(userId)
+                ?? throw new Exception("کاربر یافت نشد!");
+
+            if (!user.NeighborhoodId.HasValue || user.BirthDate == null || user.PhoneNumber == null || user.Skills == null)
+                throw new Exception("پروفایل خود را تکمیل نمایید!");
+
             var task = await uow.Tasks.GetByIdAsync(request.Id);
             if (task == null)
                 return Result.NotFound("تسک مورد نظر یافت نشد!");

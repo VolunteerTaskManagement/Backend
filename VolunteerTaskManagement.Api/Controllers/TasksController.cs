@@ -59,6 +59,12 @@ namespace VolunteerTaskManagement.Api.Controllers
             => Ok(await Mediator.Send(command));
 
         [HttpPost]
+        [Route("complete-by-volunteer")]
+        [Authorize(Roles = "Volunteer")]
+        public async Task<ActionResult<Result>> CompleteByVolunteer([FromBody] TaskCompleteByVolunteerCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
         [Authorize(Roles = "Volunteer")]
         [Route("unassign")]
         public async Task<ActionResult<Result>> Unassign([FromBody] TaskUnassignCommand command)

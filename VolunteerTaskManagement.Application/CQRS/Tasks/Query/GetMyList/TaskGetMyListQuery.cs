@@ -13,6 +13,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
 {
     public class TaskGetMyListQuery : IRequest<Result<ItemListDTO<TaskListDTO>>>
     {
+        public string? Title { get; set; }
         public List<long> NeighborhoodIds { get; set; } = [];
         public List<Skill> Skills { get; set; } = [];
         public List<VolunteerTaskStatus> Statuses { get; set; } = [];
@@ -22,6 +23,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public Expression<Func<VolunteerTask, bool>> GetFilter()
         {
             var filter = PredicateBuilder.New<VolunteerTask>(true);
+
+            if (!string.IsNullOrEmpty(Title))
+                filter.And(x => x.Title.Contains(Title));
 
             if (NeighborhoodIds.Count != 0)
                 filter.And(x => NeighborhoodIds.Contains(x.Id));
@@ -58,7 +62,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 PageIndex = request.PageIndex,
                 FilteredCount = await uow.Tasks.CountAsync(filter),
                 Items = await uow.Tasks.GetDTOAsync(
-                    TaskListDTO.Selector,
+                    TaskListDTO.Selector(userId!.Value),
                     filter,
                     orderBy: x => x.OrderBy(sort),
                     skip: (request.PageIndex - 1) * request.PageSize,
