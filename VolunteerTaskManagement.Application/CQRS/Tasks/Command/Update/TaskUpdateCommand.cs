@@ -36,12 +36,14 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public DateTime StartDate { get; set; }
     }
 
-    public class TaskUpdateCommandHandler(IVolunteerTaskManagementUnitOfWork uow, IMinIoService minIoService)
+    public class TaskUpdateCommandHandler(IVolunteerTaskManagementUnitOfWork uow, IMinIoService minIoService, IJwtManager jwtManager)
         : IRequestHandler<TaskUpdateCommand, Result>
     {
         public async Task<Result> Handle(TaskUpdateCommand request, CancellationToken cancellationToken)
         {
-            var task = await uow.Tasks.GetByIdAsync(request.Id)
+            var userId = jwtManager.GetUserId();
+
+            var task = await uow.Tasks.FirstOrDefaultAsync(x => x.Id == request.Id && x.CreatedBy == userId)
                 ?? throw new Exception("تسک مورد نظر یافت نشد!");
 
             task.Count = request.Count;

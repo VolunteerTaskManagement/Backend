@@ -9,5 +9,7 @@ namespace VolunteerTaskManagement.Domain.Entities
 
         public long TaskId { get; set; }
         public VolunteerTask Task { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }

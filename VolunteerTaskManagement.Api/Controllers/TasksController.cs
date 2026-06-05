@@ -25,7 +25,7 @@ namespace VolunteerTaskManagement.Api.Controllers
 
         [HttpGet]
         [Route("my")]
-        [Authorize(Roles = "Coordinator")]
+        [Authorize]
         public async Task<ActionResult<Result<ItemListDTO<TaskListDTO>>>> GetMyList([FromQuery] TaskGetMyListQuery command)
             => Ok(await Mediator.Send(command));
 
@@ -51,6 +51,24 @@ namespace VolunteerTaskManagement.Api.Controllers
 
             return Ok(Result.Success(result));
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Volunteer")]
+        [Route("assign")]
+        public async Task<ActionResult<Result>> Assign([FromBody] TaskAssignCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
+        [Route("complete-by-volunteer")]
+        [Authorize(Roles = "Volunteer")]
+        public async Task<ActionResult<Result>> CompleteByVolunteer([FromBody] TaskCompleteByVolunteerCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
+        [Authorize(Roles = "Volunteer")]
+        [Route("unassign")]
+        public async Task<ActionResult<Result>> Unassign([FromBody] TaskUnassignCommand command)
+            => Ok(await Mediator.Send(command));
 
         [HttpPost]
         [Authorize(Roles = "Coordinator")]

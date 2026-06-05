@@ -8,5 +8,6 @@ namespace VolunteerTaskManagement.Application.Contracts
         IUserRepository Users { get; }
         INeighborhoodRepository Neighborhoods { get; }
         ITaskRepository Tasks { get; }
+        IUserTaskRepository UserTasks { get; }
     }
 }

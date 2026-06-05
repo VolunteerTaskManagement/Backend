@@ -24,7 +24,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Profile
 
         public string? PhoneNumber { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string? Role { get; set; }
 

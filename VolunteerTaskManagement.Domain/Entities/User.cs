@@ -30,8 +30,7 @@ namespace VolunteerTaskManagement.Domain.Entities
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
         [DisplayName("تاریخ تولد")]
-
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string PicName { get; set; }
 
