@@ -53,6 +53,18 @@ namespace VolunteerTaskManagement.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Volunteer")]
+        [Route("assign")]
+        public async Task<ActionResult<Result>> Assign([FromBody] TaskAssignCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
+        [Authorize(Roles = "Volunteer")]
+        [Route("unassign")]
+        public async Task<ActionResult<Result>> Unassign([FromBody] TaskUnassignCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
         [Authorize(Roles = "Coordinator")]
         [Route("start")]
         public async Task<ActionResult<Result>> Start([FromBody] TaskStartCommand command)

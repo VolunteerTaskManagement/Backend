@@ -15,6 +15,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
     {
         public List<long> NeighborhoodIds { get; set; } = [];
         public List<Skill> Skills { get; set; } = [];
+        public List<VolunteerTaskStatus> Statuses { get; set; } = [];
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
 
@@ -27,7 +28,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
 
             if (Skills.Count != 0)
                 filter.And(x => x.Skills.Any(s => Skills.Contains(s)));
-            // TODO: Filter States
+
+            if (Statuses.Count != 0)
+                filter.And(x => Statuses.Contains(x.Status));
 
             return filter;
         }

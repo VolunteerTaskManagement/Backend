@@ -12,7 +12,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public string? Title { get; set; }
         public string? Description { get; set; }
         public List<Skill> Skills { get; set; } = [];
-        public List<string> SkillTitles => [.. Skills.Select(x => x.GetDescription())];
+        public List<string> SkillTitles =>
+            Skills?.Select(x => x.GetDescription()).ToList() ?? [];
         public int Count { get; set; }
         public string? PicName { get; set; }
         public string? PicUrl { get; set; }
