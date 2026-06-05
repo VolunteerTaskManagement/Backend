@@ -74,7 +74,7 @@ namespace VolunteerTaskManagement.Api.Controllers
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
         [Route("confirm")]
-        public async Task<ActionResult<Result>> Confirm([FromBody] TaskStartCommand command)
+        public async Task<ActionResult<Result>> Confirm([FromBody] TaskConfirmCommand command)
             => Ok(await Mediator.Send(command));
 
 
