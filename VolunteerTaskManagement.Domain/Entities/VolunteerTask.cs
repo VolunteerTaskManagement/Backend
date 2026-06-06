@@ -21,8 +21,6 @@ namespace VolunteerTaskManagement.Domain.Entities
 
         public DateTime StartDate { get; set; }
 
-        // TODO: State Management
-
         public long NeighborhoodId { get; set; }
         public Neighborhood Neighborhood { get; set; }
 
@@ -31,5 +29,6 @@ namespace VolunteerTaskManagement.Domain.Entities
         public TaskState State { get; set; }
         public VolunteerTaskStatus Status => State.Status;
 
+        public byte[] RowVersion { get; set; }
     }
 }
