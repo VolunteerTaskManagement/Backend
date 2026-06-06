@@ -17,6 +17,9 @@ namespace VolunteerTaskManagement.Infrastructure.Persistence.Configs
                 .HasMaxLength(30)
                 .HasComment("عنوان");
 
+            builder.Property(a => a.RowVersion)
+                .IsRowVersion();
+
             builder.HasOne(x => x.Neighborhood)
                 .WithMany()
                 .HasForeignKey(x => x.NeighborhoodId);
