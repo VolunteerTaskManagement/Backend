@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 namespace VolunteerTaskManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(VolunteerTaskManagementContext))]
-    partial class VolunteerTaskManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20260605100704_TaskStateManagment")]
+    partial class TaskStateManagment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,7 +184,7 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2")
                         .HasComment("تاریخ تولد");
 
@@ -276,9 +279,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -341,11 +341,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.Property<string>("PicName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
                     b.PrimitiveCollection<string>("Skills")
                         .HasColumnType("nvarchar(max)");
 
@@ -360,9 +355,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasComment("عنوان");
-
-                    b.Property<int>("VolunteerCount")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

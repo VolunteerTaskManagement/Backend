@@ -11,10 +11,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public long Id { get; set; }
         public string? Title { get; set; }
         public List<Skill> Skills { get; set; } = [];
-        public List<string> SkillTitles => [.. Skills.Select(x => x.GetDescription())];
+        public List<string> SkillTitles =>
+            Skills?.Select(x => x.GetDescription()).ToList() ?? [];
         public string? PicName { get; set; }
         public string? PicUrl { get; set; }
         public int Count { get; set; }
+        public int VolunteerCount { get; set; }
 
         public string? Description { get; set; }
 
@@ -37,6 +39,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 Skills = model.Skills,
                 Address = model.Address,
                 StartDate = model.StartDate,
+                VolunteerCount = model.VolunteerCount,
             };
     }
 }

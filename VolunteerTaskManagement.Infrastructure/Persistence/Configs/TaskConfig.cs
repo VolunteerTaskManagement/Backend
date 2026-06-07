@@ -1,6 +1,8 @@
 ﻿using Base.Infrastructure.Persistence.Configs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using StackExchange.Redis;
+using VolunteerTaskManagement.Domain.Entities.State;
 
 namespace VolunteerTaskManagement.Infrastructure.Persistence.Configs
 {
@@ -15,9 +17,38 @@ namespace VolunteerTaskManagement.Infrastructure.Persistence.Configs
                 .HasMaxLength(30)
                 .HasComment("عنوان");
 
+            builder.Property(a => a.RowVersion)
+                .IsRowVersion();
+
             builder.HasOne(x => x.Neighborhood)
                 .WithMany()
                 .HasForeignKey(x => x.NeighborhoodId);
+
+            builder
+                .Property(o => o.State)
+                .HasConversion(
+                    s => s.GetType().Name,
+                    s => GetTaskState(s)
+                                            );
         }
+
+
+
+        private static TaskState GetTaskState(string state)
+        {
+            return state switch
+            {
+                nameof(RegisterdState) => new RegisterdState(),
+                nameof(ConfirmedState) => new ConfirmedState(),
+                nameof(InProgressState) => new InProgressState(),
+                nameof(CancelledState) => new CancelledState(),
+                _ => throw new InvalidOperationException($"Unknown state: {state}")
+            };
+        }
+
     }
 }
+
+
+
+

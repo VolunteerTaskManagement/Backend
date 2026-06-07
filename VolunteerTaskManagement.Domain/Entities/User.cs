@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
-using Base.Domain.Entities.Common;
+﻿using Base.Domain.Entities.Common;
+using System.ComponentModel;
+using VolunteerTaskManagement.Domain.Enums;
 
 namespace VolunteerTaskManagement.Domain.Entities
 {
@@ -27,6 +28,21 @@ namespace VolunteerTaskManagement.Domain.Entities
 
         [DisplayName("زمان انقضای رفرش توکن")]
         public DateTime? RefreshTokenExpiryTime { get; set; }
+
+        [DisplayName("تاریخ تولد")]
+        public DateTime? BirthDate { get; set; }
+
+        public string PicName { get; set; }
+
+        [DisplayName("شماره تلفن همراه")]
+        public string PhoneNumber { get; set; }
+
+        public long? NeighborhoodId { get; set; }
+
+        public Neighborhood Neighborhood { get; set; }
+
+        [DisplayName("مهارت ها ")]
+        public List<Skill> Skills { get; set; }
 
         public ICollection<UserTask> UserTasks { get; set; }
     }

@@ -13,8 +13,10 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
 {
     public class TaskGetMyListQuery : IRequest<Result<ItemListDTO<TaskListDTO>>>
     {
+        public string? Title { get; set; }
         public List<long> NeighborhoodIds { get; set; } = [];
         public List<Skill> Skills { get; set; } = [];
+        public List<VolunteerTaskStatus> Statuses { get; set; } = [];
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
 
@@ -22,12 +24,17 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         {
             var filter = PredicateBuilder.New<VolunteerTask>(true);
 
+            if (!string.IsNullOrEmpty(Title))
+                filter.And(x => x.Title.Contains(Title));
+
             if (NeighborhoodIds.Count != 0)
                 filter.And(x => NeighborhoodIds.Contains(x.Id));
 
             if (Skills.Count != 0)
                 filter.And(x => x.Skills.Any(s => Skills.Contains(s)));
-            // TODO: Filter States
+
+            if (Statuses.Count != 0)
+                filter.And(x => Statuses.Contains(x.Status));
 
             return filter;
         }
@@ -55,7 +62,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 PageIndex = request.PageIndex,
                 FilteredCount = await uow.Tasks.CountAsync(filter),
                 Items = await uow.Tasks.GetDTOAsync(
-                    TaskListDTO.Selector,
+                    TaskListDTO.Selector(userId!.Value, role),
                     filter,
                     orderBy: x => x.OrderBy(sort),
                     skip: (request.PageIndex - 1) * request.PageSize,

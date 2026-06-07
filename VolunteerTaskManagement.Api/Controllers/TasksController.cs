@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerTaskManagement.Application.CQRS.Tasks;
+using VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm;
 using VolunteerTaskManagement.Domain.Enums;
 
 namespace VolunteerTaskManagement.Api.Controllers
@@ -24,7 +25,7 @@ namespace VolunteerTaskManagement.Api.Controllers
 
         [HttpGet]
         [Route("my")]
-        [Authorize(Roles = "Coordinator")]
+        [Authorize]
         public async Task<ActionResult<Result<ItemListDTO<TaskListDTO>>>> GetMyList([FromQuery] TaskGetMyListQuery command)
             => Ok(await Mediator.Send(command));
 
@@ -50,5 +51,48 @@ namespace VolunteerTaskManagement.Api.Controllers
 
             return Ok(Result.Success(result));
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Volunteer")]
+        [Route("assign")]
+        public async Task<ActionResult<Result>> Assign([FromBody] TaskAssignCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
+        [Route("complete-by-volunteer")]
+        [Authorize(Roles = "Volunteer")]
+        public async Task<ActionResult<Result>> CompleteByVolunteer([FromBody] TaskCompleteByVolunteerCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
+        [Authorize(Roles = "Volunteer")]
+        [Route("unassign")]
+        public async Task<ActionResult<Result>> Unassign([FromBody] TaskUnassignCommand command)
+            => Ok(await Mediator.Send(command));
+
+        [HttpPost]
+        [Authorize(Roles = "Coordinator")]
+        [Route("start")]
+        public async Task<ActionResult<Result>> Start([FromBody] TaskStartCommand command)
+            => Ok(await Mediator.Send(command));
+
+
+        [HttpPost]
+        [Authorize(Roles = "Coordinator")]
+        [Route("confirm")]
+        public async Task<ActionResult<Result>> Confirm([FromBody] TaskConfirmCommand command)
+            => Ok(await Mediator.Send(command));
+
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "Coordinator")]
+        [Route("cancel")]
+        public async Task<ActionResult<Result>> Cancel([FromBody] TaskCancelCommand command)
+            => Ok(await Mediator.Send(command));
+
+
+
     }
 }
