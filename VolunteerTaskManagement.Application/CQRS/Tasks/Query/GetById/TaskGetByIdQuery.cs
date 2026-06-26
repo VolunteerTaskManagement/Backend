@@ -23,6 +23,10 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             
             if (task is null) return Result.NotFound<TaskGetByIdDTO>("رکورد موردنظر یافت نشد");
 
+            var coordinator = await uow.Users.FirstOrDefaultAsync(x => x.Id == task.CreatorId);
+
+            task.CoordinatorName = coordinator?.FirstName + " " + coordinator?.LastName;
+            task.Mobile = coordinator?.PhoneNumber;
             task.PicUrl = await minIoService.GetDownloadUrl(task.PicName, "Tasks");
 
             return Result.Success(task);

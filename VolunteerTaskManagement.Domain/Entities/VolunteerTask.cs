@@ -1,6 +1,7 @@
 ﻿using Base.Domain.Entities.Common;
-using VolunteerTaskManagement.Domain.Entities.State;
 using VolunteerTaskManagement.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
+using VolunteerTaskManagement.Domain.Entities.State;
 
 namespace VolunteerTaskManagement.Domain.Entities
 {
@@ -29,6 +30,7 @@ namespace VolunteerTaskManagement.Domain.Entities
         public TaskState State { get; set; }
         public VolunteerTaskStatus Status => State.Status;
 
+        [Timestamp]
         public byte[] RowVersion { get; set; }
     }
 }

@@ -19,6 +19,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public int VolunteerCount { get; set; }
 
         public string? Description { get; set; }
+        public string? Mobile { get; set; }
+        public string? CoordinatorName { get; set; }
+        public long? CreatorId { get; set; }
 
         public string? Address { get; set; }
 
@@ -31,6 +34,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             model => new TaskGetByIdDTO
             {
                 Id = model.Id,
+                CreatorId = model.CreatedBy,
                 Count = model.Count,
                 Description = model.Description,
                 NeighborhoodTitle = model.Neighborhood.Title,
