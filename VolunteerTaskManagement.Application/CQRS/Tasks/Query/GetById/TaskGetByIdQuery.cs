@@ -16,9 +16,10 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public async Task<Result<TaskGetByIdDTO>> Handle(TaskGetByIdQuery request, CancellationToken cancellationToken)
         {
             var userId = jwtManager.GetUserId();
+            var role = jwtManager.GetRole();
 
             var task = await uow.Tasks.GetOneDTOAsync(
-                TaskGetByIdDTO.Selector,
+                TaskGetByIdDTO.Selector(userId!.Value, role),
                 x => x.CreatedBy == userId && x.Id == request.Id);
             
             if (task is null) return Result.NotFound<TaskGetByIdDTO>("رکورد موردنظر یافت نشد");
