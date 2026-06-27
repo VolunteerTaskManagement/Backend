@@ -29,8 +29,10 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public string StartDateFa => StartDate.ToPersianDateTime().ToString();
         public long NeighborhoodId { get; set; }
         public string? NeighborhoodTitle { get; set; }
+        public bool IsAssigned { get; set; }
+        public bool IsConfirmedByVolunteer { get; set; }
 
-        public static Expression<Func<VolunteerTask, TaskGetByIdDTO>> Selector =>
+        public static Expression<Func<VolunteerTask, TaskGetByIdDTO>> Selector(long userId, string role) =>
             model => new TaskGetByIdDTO
             {
                 Id = model.Id,
@@ -44,6 +46,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 Address = model.Address,
                 StartDate = model.StartDate,
                 VolunteerCount = model.VolunteerCount,
+                IsAssigned = model.UserTasks.Any(x => x.VolunteerId == userId),
+                IsConfirmedByVolunteer = role == "Volunteer" ? model.UserTasks.Where(x => x.VolunteerId == userId).Select(x => x.IsCompleted).FirstOrDefault()
+                                                             : !model.UserTasks.Any(x => x.IsCompleted == false)
             };
     }
 }
