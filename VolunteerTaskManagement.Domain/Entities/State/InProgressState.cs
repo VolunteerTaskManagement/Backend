@@ -12,11 +12,15 @@ namespace VolunteerTaskManagement.Domain.Entities.State
         public override void Confirm(VolunteerTask task)
         {
             task.State = new ConfirmedState();
+            task.Status = VolunteerTaskStatus.Confirmed;
+
         }
 
         public override void Cancel(VolunteerTask task)
         {
             task.State = new CancelledState();
+            task.Status = VolunteerTaskStatus.Cancelled;
+
         }
     }
 }

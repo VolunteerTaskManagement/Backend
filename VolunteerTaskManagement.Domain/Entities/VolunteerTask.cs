@@ -28,7 +28,7 @@ namespace VolunteerTaskManagement.Domain.Entities
         public ICollection<UserTask> UserTasks { get; set; }
 
         public TaskState State { get; set; }
-        public VolunteerTaskStatus Status => State.Status;
+        public VolunteerTaskStatus Status { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
