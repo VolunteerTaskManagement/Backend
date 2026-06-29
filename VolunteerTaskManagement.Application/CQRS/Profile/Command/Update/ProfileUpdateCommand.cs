@@ -21,6 +21,7 @@ namespace VolunteerTaskManagement.Application.Profile.Command.Update
 
         public IFormFile? ProfilePic { get; set; }
         public List<Skill> Skills { get; set; } = [];
+        public string? NationalCode { get; set; }
 
     }
     public class ProfileUpdateCommandHandler(
@@ -44,6 +45,7 @@ namespace VolunteerTaskManagement.Application.Profile.Command.Update
             user.PhoneNumber = request.PhoneNumber;
             user.BirthDate = request.BirthDate;
             user.NeighborhoodId = request.NeighborhoodId;
+            user.NationalCode=request.NationalCode;
 
             if (request.ProfilePic != null)
             {

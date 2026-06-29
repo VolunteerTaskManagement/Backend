@@ -32,6 +32,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Profile
         public string? PicUrl { get; set; }
 
         public string? NeighborhoodTitle { get; set; }
+
+        public string? NationalCode { get; set; }
         public List<Skill> Skills { get; set; } = [];
         public List<string> SkillTitles =>
             Skills?.Select(x => x.GetDescription()).ToList() ?? new List<string>();
@@ -48,7 +50,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Profile
                 Role = model.Role,
                 PicName = model.PicName,
                 NeighborhoodTitle = model.Neighborhood.Title,
-                Skills=model.Skills
+                Skills=model.Skills ,
+                NationalCode = model.NationalCode
 
             };
     }

@@ -44,6 +44,9 @@ namespace VolunteerTaskManagement.Domain.Entities
         [DisplayName("مهارت ها ")]
         public List<Skill> Skills { get; set; }
 
+        [DisplayName("کد ملی ")]
+        public string NationalCode { get; set; }
+
         public ICollection<UserTask> UserTasks { get; set; }
     }
 }

@@ -26,6 +26,13 @@ namespace VolunteerTaskManagement.Application.Profile.Command.Update
 
             RuleFor(x => x.Skills)
                 .NotEmpty().WithMessage("مهارت‌ها اجباری است!");
+            RuleFor(x => x.NationalCode)
+                .Length(10)
+                .WithMessage("کد ملی باید ۱۰ رقم باشد.")
+                .Matches(@"^\d{10}$")
+                .WithMessage("کد ملی باید فقط شامل عدد باشد.")
+                .When(x => !string.IsNullOrWhiteSpace(x.NationalCode));
+
 
         }
     }
