@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using Base.Application.Contracts;
+using FluentValidation;
 
 namespace VolunteerTaskManagement.Application.Profile.Command.Update
 {
     public class ProfileUpdateCommandValidator : AbstractValidator<ProfileUpdateCommand>
     {
-        public ProfileUpdateCommandValidator()
+        public ProfileUpdateCommandValidator(IJwtManager jwtManager)
         {
             RuleFor(x => x.FirstName)
                  .NotEmpty().WithMessage("نام اجباری است!")
@@ -18,20 +19,24 @@ namespace VolunteerTaskManagement.Application.Profile.Command.Update
                 .NotEmpty().Matches(@"^09\d{9}$")
                 .WithMessage("شماره تلفن نامعتبر است");
 
-            RuleFor(x => x.BirthDate)
-                .NotEmpty().WithMessage("تاریخ تولد الزامی است");
+            When(x => jwtManager.GetRole() == "Volunteer", () =>
+            {
+                RuleFor(x => x.BirthDate)
+                    .NotEmpty().WithMessage("تاریخ تولد الزامی است");
 
-            RuleFor(x => x.NeighborhoodId)
-                .NotEmpty().WithMessage("محله الزامی است");
+                RuleFor(x => x.NeighborhoodId)
+                    .NotEmpty().WithMessage("محله الزامی است");
 
-            RuleFor(x => x.Skills)
-                .NotEmpty().WithMessage("مهارت‌ها اجباری است!");
+                RuleFor(x => x.Skills)
+                    .NotEmpty().WithMessage("مهارت‌ها اجباری است!");
+            });
+
             RuleFor(x => x.NationalCode)
                 .Length(10)
                 .WithMessage("کد ملی باید ۱۰ رقم باشد.")
                 .Matches(@"^\d{10}$")
                 .WithMessage("کد ملی باید فقط شامل عدد باشد.")
-                .When(x => !string.IsNullOrWhiteSpace(x.NationalCode));
+                .When(x => jwtManager.GetRole() == "Coordinator");
 
 
         }

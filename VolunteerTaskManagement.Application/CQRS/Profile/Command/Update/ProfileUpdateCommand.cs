@@ -15,12 +15,12 @@ namespace VolunteerTaskManagement.Application.Profile.Command.Update
 
         public string? PhoneNumber { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
-        public long NeighborhoodId { get; set; }
+        public long? NeighborhoodId { get; set; }
 
         public IFormFile? ProfilePic { get; set; }
-        public List<Skill> Skills { get; set; } = [];
+        public List<Skill>? Skills { get; set; } = [];
         public string? NationalCode { get; set; }
 
     }
