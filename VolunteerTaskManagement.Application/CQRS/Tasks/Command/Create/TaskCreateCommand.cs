@@ -49,7 +49,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 NeighborhoodId = request.NeighborhoodId,
                 Address = request.Address,
                 StartDate = request.StartDate,
+                Status = VolunteerTaskStatus.Registered
             };
+           
 
             if (request.Pic != null)
             {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 namespace VolunteerTaskManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(VolunteerTaskManagementContext))]
-    partial class VolunteerTaskManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20260626163036_MakeStatusDbField")]
+    partial class MakeStatusDbField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,9 +219,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasComment("نام خانوادگی");
-
-                    b.Property<string>("NationalCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("NeighborhoodId")
                         .HasColumnType("bigint");

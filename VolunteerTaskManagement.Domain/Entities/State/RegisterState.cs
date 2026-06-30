@@ -12,11 +12,17 @@ namespace VolunteerTaskManagement.Domain.Entities.State
         public override void Start(VolunteerTask task)
         { 
             task.State = new InProgressState();
+            task.Status = VolunteerTaskStatus.InProgress;
+
+
         }
 
         public override void Cancel(VolunteerTask task)
         {
             task.State = new CancelledState();
+            task.Status = VolunteerTaskStatus.Cancelled;
+
+
         }
     }
 }
