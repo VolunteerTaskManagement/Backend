@@ -25,12 +25,14 @@ namespace VolunteerTaskManagement.Application.CQRS.Profile
         public string? PhoneNumber { get; set; }
 
         public DateTime? BirthDate { get; set; }
+        public string? BirthDateFa => BirthDate?.ToPersianDateTime().ToShortDateString();
 
         public string? Role { get; set; }
 
         public string? PicName { get; set; }
         public string? PicUrl { get; set; }
 
+        public long? NeighborhoodId { get; set; }
         public string? NeighborhoodTitle { get; set; }
 
         public string? NationalCode { get; set; }
@@ -49,7 +51,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Profile
                 BirthDate = model.BirthDate,
                 Role = model.Role,
                 PicName = model.PicName,
-                NeighborhoodTitle = model.Neighborhood.Title,
+                NeighborhoodId = model.NeighborhoodId,
+                NeighborhoodTitle = model.NeighborhoodId.HasValue ? model.Neighborhood.Title : null,
                 Skills=model.Skills ,
                 NationalCode = model.NationalCode
 
