@@ -32,7 +32,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (task == null)
                 return Result.NotFound("تسک مورد نظر یافت نشد!");
 
-            if (task.UserTasks.Any(x => x.CreatedBy == user.Id))
+            if (task.UserTasks?.Any(x => x.CreatedBy == user.Id) ?? false)
                 return Result.Failure("شماره در این تسک ثبت نام کرده‌اید!");
 
             if (task.Status != Domain.Enums.VolunteerTaskStatus.Registered)
