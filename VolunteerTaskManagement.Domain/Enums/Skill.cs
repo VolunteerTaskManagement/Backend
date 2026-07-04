@@ -103,7 +103,7 @@ namespace VolunteerTaskManagement.Domain.Enums
         [Description("تعمیرات موبایل و رادیو")]
         MobileRepair = 54,
 
-        [Description("رانندگی لیسانس")]
+        [Description("گواهینامه رانندگی")]
         CarDriving = 60,
 
         [Description("رانندگی پایه یک (کامیون)")]
