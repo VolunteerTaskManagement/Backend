@@ -34,7 +34,7 @@ namespace VolunteerTaskManagement.Api.Controllers
             => Ok(await Mediator.Send(command));
 
         [HttpGet("{id:long}")]
-        [Authorize(Roles = "Coordinator")]
+        [Authorize]
         public async Task<ActionResult<Result<TaskGetByIdDTO>>> GetById(long id)
             => Ok(await Mediator.Send(new TaskGetByIdQuery(id)));
 

@@ -20,7 +20,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
 
             var task = await uow.Tasks.GetOneDTOAsync(
                 TaskGetByIdDTO.Selector(userId!.Value, role),
-                x => x.CreatedBy == userId && x.Id == request.Id);
+                x => x.Id == request.Id);
             
             if (task is null) return Result.NotFound<TaskGetByIdDTO>("رکورد موردنظر یافت نشد");
 
