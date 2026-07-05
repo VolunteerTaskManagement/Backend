@@ -38,7 +38,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (task.Status != Domain.Enums.VolunteerTaskStatus.Registered)
                 return Result.Failure("ثبت نام در این مرحله امکان پذیر نیست!");
 
-            if (task.VolunteerCount > task.Count)
+            if (task.VolunteerCount >= task.Count)
                 return Result.Failure("ظرفیت تسک به حد نصاب رسیده است!");
 
             task.VolunteerCount += 1;
