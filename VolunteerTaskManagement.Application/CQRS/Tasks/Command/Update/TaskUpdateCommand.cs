@@ -31,6 +31,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         [Display(Name = "تعداد افراد مورد نیاز")]
         public int Count { get; set; }
 
+        [Display(Name = "عرض جغرافیایی")]
+        public double Lat { get; set; }
+
+        [Display(Name = "طول جغرافیایی")]
+        public double Lng { get; set; }
+
         public string? Address { get; set; }
 
         public DateTime StartDate { get; set; }

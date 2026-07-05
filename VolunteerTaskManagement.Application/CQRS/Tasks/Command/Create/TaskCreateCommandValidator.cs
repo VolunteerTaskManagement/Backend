@@ -24,6 +24,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             RuleFor(x => x.Count)
                 .GreaterThan(0).WithMessage("تعداد افراد مورد نیاز اجباری است!");
 
+            RuleFor(x => x.Lat)
+                .GreaterThan(0).WithMessage("عرض جغرافیایی اجباری است!");
+
+            RuleFor(x => x.Lng)
+                .GreaterThan(0).WithMessage("طول جغرافیایی اجباری است!");
+
             RuleFor(x => x.Address)
                 .NotEmpty().WithMessage("آدرس اجباری است!");
 

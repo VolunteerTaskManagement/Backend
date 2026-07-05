@@ -7,6 +7,9 @@ namespace VolunteerTaskManagement.Domain.Entities
 {
     public class VolunteerTask : BaseEntity
     {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+
         public string Title { get; set; }
 
         public List<Skill> Skills { get; set; }
