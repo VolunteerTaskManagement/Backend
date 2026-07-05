@@ -31,6 +31,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public string? NeighborhoodTitle { get; set; }
         public bool IsAssigned { get; set; }
         public bool IsConfirmedByVolunteer { get; set; }
+        public VolunteerTaskStatus Status { get; set; }
+        public string StatusTitle => Status.GetDescription();
 
         public static Expression<Func<VolunteerTask, TaskGetByIdDTO>> Selector(long userId, string role) =>
             model => new TaskGetByIdDTO
@@ -43,6 +45,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 Title = model.Title,
                 PicName = model.PicName,
                 Skills = model.Skills,
+                Status = model.Status,
                 Address = model.Address,
                 StartDate = model.StartDate,
                 VolunteerCount = model.VolunteerCount,
