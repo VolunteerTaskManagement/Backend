@@ -28,7 +28,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public bool IsConfirmedByVolunteer { get; set; }
         public VolunteerTaskStatus Status { get; set; }
         public string StatusTitle => Status.GetDescription();
-
+        public double Lat { get; set; }
+        public double Lng { get; set; }
 
         public static Expression<Func<VolunteerTask, TaskListDTO>> Selector(long userId, string role) =>
             model => new TaskListDTO
@@ -38,6 +39,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 Description = model.Description,
                 NeighborhoodTitle = model.Neighborhood.Title,
                 Title = model.Title,
+                Lat = model.Lat,
+                Lng = model.Lng,
                 PicName = model.PicName,
                 Skills = model.Skills,
                 Address = model.Address,
