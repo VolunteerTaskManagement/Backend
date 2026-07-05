@@ -1,4 +1,6 @@
-﻿namespace Base.Application.Contracts.DTOs
+﻿using VolunteerTaskManagement.Domain.Enums;
+
+namespace Base.Application.Contracts.DTOs
 {
     public class UserDTO
     {
@@ -11,6 +13,7 @@
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
         public bool IsProfileComplete { get; set; }
-
+        public long? NeighborhoodId { get; set; }
+        public List<Skill> Skills { get; set; } = [];
     }
 }
