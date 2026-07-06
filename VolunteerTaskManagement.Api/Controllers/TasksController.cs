@@ -38,6 +38,11 @@ namespace VolunteerTaskManagement.Api.Controllers
         public async Task<ActionResult<Result<TaskGetByIdDTO>>> GetById(long id)
             => Ok(await Mediator.Send(new TaskGetByIdQuery(id)));
 
+        [HttpGet("{id:long}/volunteer-confirmations")]
+        [Authorize(Roles = "Coordinator")]
+        public async Task<ActionResult<Result<List<TaskGetVolunteerConfirmationsDTO>>>> GetVolunteerConfirmations(long id)
+            => Ok(await Mediator.Send(new TaskGetVolunteerConfirmationsQuery(id)));
+
         [HttpDelete("{id:long}")]
         [Authorize(Roles = "Coordinator")]
         [ProducesResponseType(typeof(Result), 200)]
