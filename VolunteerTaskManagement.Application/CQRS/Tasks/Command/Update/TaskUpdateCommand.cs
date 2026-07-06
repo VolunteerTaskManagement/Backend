@@ -62,6 +62,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             task.NeighborhoodId = request.NeighborhoodId;
             task.Address = request.Address;
             task.StartDate = request.StartDate;
+            task.Lat = request.Lat;
+            task.Lng = request.Lng;
 
             if (request.Pic != null)
             {
