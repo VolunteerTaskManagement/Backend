@@ -15,4 +15,5 @@
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
+  <Project Path="VolunteerTaskManagement.Application.UnitTests/VolunteerTaskManagement.Application.UnitTests.csproj" Id="16b7f3b3-aefd-4b4a-9f03-bffdfe3d2b48" />
 </Solution>
