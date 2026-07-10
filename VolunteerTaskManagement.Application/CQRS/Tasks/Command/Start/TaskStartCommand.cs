@@ -29,7 +29,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
             if (task.VolunteerCount < task.Count)
                 throw new Exception("ظرفیت تسک پر نشده است");
 
-            if (task.StartDate < DateTime.Now)
+            if (task.StartDate.Date > DateTime.Now.Date)
                 return Result.Failure("تاریخ شروع فرا نرسیده است!");
 
             task.State.Start(task);

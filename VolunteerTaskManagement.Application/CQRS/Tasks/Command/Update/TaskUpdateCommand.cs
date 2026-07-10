@@ -55,6 +55,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (request.Count < task.VolunteerCount)
                 return Result.Failure("تعداد افراد مورد نیاز نمی‌تواند کمتر از تعداد افراد ثبت نام شده باشد!");
 
+            if (task.Status > VolunteerTaskStatus.Registered)
+                return Result.Failure("در مرحله ثبت فقط مجاز به ویرایش تسک هستید!");
+
             task.Count = request.Count;
             task.Title = request.Title;
             task.Skills = request.Skills;

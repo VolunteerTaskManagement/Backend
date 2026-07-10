@@ -27,7 +27,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public string? Address { get; set; }
 
         public DateTime StartDate { get; set; }
-        public string StartDateFa => StartDate.ToPersianDateTime().ToString();
+        public string StartDateFa => StartDate.ToPersianDateTime().ToShortDateString();
         public long NeighborhoodId { get; set; }
         public string? NeighborhoodTitle { get; set; }
         public bool IsAssigned { get; set; }
