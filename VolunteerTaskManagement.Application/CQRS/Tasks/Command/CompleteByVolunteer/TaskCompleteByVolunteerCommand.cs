@@ -25,6 +25,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (userTask.Task.Status != Domain.Enums.VolunteerTaskStatus.InProgress)
                 throw new Exception("در این مرحله امکان ثبت پایان کار وجود ندارد!");
 
+            if (userTask.IsCompleted)
+                return Result.Failure("این تسک قبلا تایید شده است!");
+
             userTask.IsCompleted = true;
 
             await uow.CommitAsync();
