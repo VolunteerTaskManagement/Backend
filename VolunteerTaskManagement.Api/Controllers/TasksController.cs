@@ -99,7 +99,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                         });
 
                         notificationHub?.SendNotification(
-                            $"تسک '{taskTitle}' توسط {userName} تکمیل شد.",
+                            $"تسک {taskTitle} توسط {userName} تکمیل شد.",
                             [createdBy]
                         );
                     }
@@ -125,7 +125,15 @@ namespace VolunteerTaskManagement.Api.Controllers
             if (res.IsSuccess)
             {
                 var volunteersId = await Mediator.Send(new TaskGetVolunteersQuery(command.Id)) ?? [];
-                notificationHub?.SendNotification($"تسک {res.Value} به وضعیت درحال انجام تغییر پیدا کرد.", volunteersId);
+                if (volunteersId.Count > 0)
+                {
+                    await Mediator.Send(new NotficationLogCreateCommand()
+                    {
+                        UsersId = volunteersId,
+                        Title = res.Value
+                    });
+                    notificationHub?.SendNotification($"تسک {res.Value} شروع شد.", volunteersId);
+                }
             }
 
             return Ok(res);
@@ -142,7 +150,15 @@ namespace VolunteerTaskManagement.Api.Controllers
             if (res.IsSuccess)
             {
                 var volunteersId = await Mediator.Send(new TaskGetVolunteersQuery(command.Id)) ?? [];
-                notificationHub?.SendNotification($"تسک {res.Value} توسط هماهنگ کننده تایید شد.", volunteersId);
+                if (volunteersId.Count > 0)
+                {
+                    await Mediator.Send(new NotficationLogCreateCommand()
+                    {
+                        UsersId = volunteersId,
+                        Title = res.Value
+                    });
+                    notificationHub?.SendNotification($"تسک {res.Value} تایید شد.", volunteersId);
+                }
             }
 
             return Ok(res);
@@ -161,7 +177,15 @@ namespace VolunteerTaskManagement.Api.Controllers
             if (res.IsSuccess)
             {
                 var volunteersId = await Mediator.Send(new TaskGetVolunteersQuery(command.Id)) ?? [];
-                notificationHub?.SendNotification($"تسک {res.Value} لغو.", volunteersId);
+                if (volunteersId.Count > 0)
+                {
+                    await Mediator.Send(new NotficationLogCreateCommand()
+                    {
+                        UsersId = volunteersId,
+                        Title = res.Value
+                    });
+                    notificationHub?.SendNotification($"تسک {res.Value} لغو شد.", volunteersId);
+                }
             }
 
             return Ok(res);
