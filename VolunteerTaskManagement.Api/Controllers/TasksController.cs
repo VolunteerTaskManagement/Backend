@@ -1,17 +1,20 @@
 ﻿using Base.Api.Base;
 using Base.Application;
+using Base.Application.Contracts;
 using Base.Application.Contracts.DTOs.Common;
 using Base.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VolunteerTaskManagement.Api.Hubs;
+using VolunteerTaskManagement.Application.CQRS.NotficationLogs.Command.Create;
 using VolunteerTaskManagement.Application.CQRS.Tasks;
 using VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm;
 using VolunteerTaskManagement.Domain.Enums;
 
 namespace VolunteerTaskManagement.Api.Controllers
 {
-    public class TasksController(IMediator mediator) : BaseApiController(mediator)
+    public class TasksController(IMediator mediator, NotificationHub notificationHub, IJwtManager jwtManager) : BaseApiController(mediator)
     {
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
@@ -47,7 +50,10 @@ namespace VolunteerTaskManagement.Api.Controllers
         [Authorize(Roles = "Coordinator")]
         [ProducesResponseType(typeof(Result), 200)]
         public async Task<ActionResult<Result>> Delete(long id)
-            => Ok(await Mediator.Send(new TaskDeleteCommand(id)));
+        {
+            var res = await Mediator.Send(new TaskDeleteCommand(id));
+            return Ok(res);
+        }
 
         [HttpGet("skills")]
         public ActionResult<Result> GetSkills(string search)
@@ -61,13 +67,47 @@ namespace VolunteerTaskManagement.Api.Controllers
         [Authorize(Roles = "Volunteer")]
         [Route("assign")]
         public async Task<ActionResult<Result>> Assign([FromBody] TaskAssignCommand command)
-            => Ok(await Mediator.Send(command));
+        {
+            var res = await Mediator.Send(command);
+            return Ok(res);
+        }
 
         [HttpPost]
         [Route("complete-by-volunteer")]
         [Authorize(Roles = "Volunteer")]
-        public async Task<ActionResult<Result>> CompleteByVolunteer([FromBody] TaskCompleteByVolunteerCommand command)
-            => Ok(await Mediator.Send(command));
+        public async Task<ActionResult<Result<List<string?>>>> CompleteByVolunteer([FromBody] TaskCompleteByVolunteerCommand command)
+        {
+            var res = await Mediator.Send(command);
+
+            if (res.IsSuccess)
+            {
+                var userName = jwtManager.GetName();
+
+                var data = res.Value;
+
+                if (data != null && data.Count >= 2)
+                {
+                    var taskTitle = data[0];
+                    var createdByStr = data[1] ?? "0";
+
+                    if (long.TryParse(createdByStr, out var createdBy))
+                    {
+                        await Mediator.Send(new NotficationLogCreateCommand()
+                        {
+                            UsersId = [createdBy],
+                            Title = taskTitle
+                        });
+
+                        notificationHub?.SendNotification(
+                            $"تسک '{taskTitle}' توسط {userName} تکمیل شد.",
+                            [createdBy]
+                        );
+                    }
+                }
+            }
+
+            return Ok(res);
+        }
 
         [HttpPost]
         [Authorize(Roles = "Volunteer")]
@@ -78,15 +118,35 @@ namespace VolunteerTaskManagement.Api.Controllers
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
         [Route("start")]
-        public async Task<ActionResult<Result>> Start([FromBody] TaskStartCommand command)
-            => Ok(await Mediator.Send(command));
+        public async Task<ActionResult<Result<string>>> Start([FromBody] TaskStartCommand command)
+        {
+            var res = await Mediator.Send(command);
+
+            if (res.IsSuccess)
+            {
+                var volunteersId = await Mediator.Send(new TaskGetVolunteersQuery(command.Id)) ?? [];
+                notificationHub?.SendNotification($"تسک {res.Value} به وضعیت درحال انجام تغییر پیدا کرد.", volunteersId);
+            }
+
+            return Ok(res);
+        }
 
 
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
         [Route("confirm")]
-        public async Task<ActionResult<Result>> Confirm([FromBody] TaskConfirmCommand command)
-            => Ok(await Mediator.Send(command));
+        public async Task<ActionResult<Result<string>>> Confirm([FromBody] TaskConfirmCommand command)
+        {
+            var res = await Mediator.Send(command);
+
+            if (res.IsSuccess)
+            {
+                var volunteersId = await Mediator.Send(new TaskGetVolunteersQuery(command.Id)) ?? [];
+                notificationHub?.SendNotification($"تسک {res.Value} توسط هماهنگ کننده تایید شد.", volunteersId);
+            }
+
+            return Ok(res);
+        }
 
 
 
@@ -95,8 +155,17 @@ namespace VolunteerTaskManagement.Api.Controllers
         [Authorize(Roles = "Coordinator")]
         [Route("cancel")]
         public async Task<ActionResult<Result>> Cancel([FromBody] TaskCancelCommand command)
-            => Ok(await Mediator.Send(command));
+        {
+            var res = await Mediator.Send(command);
 
+            if (res.IsSuccess)
+            {
+                var volunteersId = await Mediator.Send(new TaskGetVolunteersQuery(command.Id)) ?? [];
+                notificationHub?.SendNotification($"تسک {res.Value} لغو.", volunteersId);
+            }
+
+            return Ok(res);
+        }
 
 
     }

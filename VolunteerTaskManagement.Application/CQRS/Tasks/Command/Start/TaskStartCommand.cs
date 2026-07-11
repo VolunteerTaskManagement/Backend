@@ -8,7 +8,7 @@ using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
 {
-    public class TaskStartCommand : IRequest<Result>
+    public class TaskStartCommand : IRequest<Result<string>>
     {
         public long Id { get; set; }
 
@@ -16,9 +16,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
 
     }
     public class TaskStartCommandHandler(IVolunteerTaskManagementUnitOfWork uow, IJwtManager jwtManager)
-        : IRequestHandler<TaskStartCommand, Result>
+        : IRequestHandler<TaskStartCommand, Result<string>>
     {
-        public async Task<Result> Handle(TaskStartCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(TaskStartCommand request, CancellationToken cancellationToken)
         {
             var userId = jwtManager.GetUserId();
 
@@ -30,12 +30,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
                 throw new Exception("ظرفیت تسک پر نشده است");
 
             if (task.StartDate.Date > DateTime.Now.Date)
-                return Result.Failure("تاریخ شروع فرا نرسیده است!");
+                return Result.Failure<string>(new Error("400", "تاریخ شروع فرا نرسیده است!"));
 
             task.State.Start(task);
 
             await uow.CommitAsync();
-            return Result.Success();
+            return Result.Success(task.Title);
 
         }
     }
