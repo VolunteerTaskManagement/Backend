@@ -2,6 +2,7 @@
 using Base.Application.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 
@@ -42,6 +43,10 @@ namespace Base.Application.Middleware
                         break;
                     case InvalidOperationException:
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    case DbUpdateConcurrencyException:
+                        response.StatusCode = (int)HttpStatusCode.Conflict;
+                        errorModel.Message = "اطلاعات مورد نظر توسط کاربر دیگری تغییر کرده است. لطفاً صفحه را مجدداً بارگذاری کرده و دوباره تلاش کنید.";
                         break;
                     default:
                         if (ex.Message == null)

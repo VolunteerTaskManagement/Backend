@@ -1,11 +1,15 @@
 ﻿using Base.Domain.Entities.Common;
-using VolunteerTaskManagement.Domain.Entities.State;
 using VolunteerTaskManagement.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
+using VolunteerTaskManagement.Domain.Entities.State;
 
 namespace VolunteerTaskManagement.Domain.Entities
 {
     public class VolunteerTask : BaseEntity
     {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+
         public string Title { get; set; }
 
         public List<Skill> Skills { get; set; }
@@ -27,8 +31,9 @@ namespace VolunteerTaskManagement.Domain.Entities
         public ICollection<UserTask> UserTasks { get; set; }
 
         public TaskState State { get; set; }
-        public VolunteerTaskStatus Status => State.Status;
+        public VolunteerTaskStatus Status { get; set; }
 
+        [Timestamp]
         public byte[] RowVersion { get; set; }
     }
 }

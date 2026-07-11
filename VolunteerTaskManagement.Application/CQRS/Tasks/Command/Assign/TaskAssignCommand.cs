@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Base.Application.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Base.Application.Contracts.DTOs.Common;
 using VolunteerTaskManagement.Application.Contracts;
 using VolunteerTaskManagement.Domain.Entities;
@@ -24,12 +25,21 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (!user.NeighborhoodId.HasValue || user.BirthDate == null || user.PhoneNumber == null || user.Skills == null)
                 throw new Exception("پروفایل خود را تکمیل نمایید!");
 
-            var task = await uow.Tasks.GetByIdAsync(request.Id);
+            var task = await uow.Tasks.FirstOrDefaultAsync(
+                x => x.Id == request.Id,
+                includes: x => x.Include(x => x.UserTasks)
+                );
             if (task == null)
                 return Result.NotFound("تسک مورد نظر یافت نشد!");
 
+            if (task.UserTasks?.Any(x => x.CreatedBy == user.Id) ?? false)
+                return Result.Failure("شماره در این تسک ثبت نام کرده‌اید!");
+
             if (task.Status != Domain.Enums.VolunteerTaskStatus.Registered)
                 return Result.Failure("ثبت نام در این مرحله امکان پذیر نیست!");
+
+            if (task.VolunteerCount >= task.Count)
+                return Result.Failure("ظرفیت تسک به حد نصاب رسیده است!");
 
             task.VolunteerCount += 1;
 

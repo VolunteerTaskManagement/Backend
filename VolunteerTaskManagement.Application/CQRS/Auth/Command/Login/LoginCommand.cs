@@ -32,6 +32,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Auth
                 UserName = user.UserName,
                 Role = user.Role,
                 Email = user.Email,
+                Skills = user.Skills,
+                NeighborhoodId = user.NeighborhoodId,
             };
             
             var accessToken = jwtManager.CreateToken(userDto);

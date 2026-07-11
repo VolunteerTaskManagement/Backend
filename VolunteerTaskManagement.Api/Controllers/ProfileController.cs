@@ -14,14 +14,14 @@ namespace VolunteerTaskManagement.Api.Controllers
     public class ProfileController(IMediator mediator) : BaseApiController(mediator)
     {
         [HttpGet]
-        [Authorize(Roles = "Volunteer")]
+        [Authorize]
         public async Task<ActionResult<Result<ProfileDto>>> Get([FromQuery] ProfileQuery query)
         {
             return await Mediator.Send(query);
         }
 
         [HttpPut]
-        [Authorize(Roles = "Volunteer")]
+        [Authorize]
         public async Task<ActionResult<Result<bool>>> Update([FromForm] ProfileUpdateCommand command)
         {
             return await Mediator.Send(command);
