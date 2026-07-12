@@ -34,7 +34,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 .NotEmpty().WithMessage("آدرس اجباری است!");
 
             RuleFor(x => x.StartDate)
-                .NotEmpty().WithMessage("تاریخ شروع اجباری است!");
+                .NotEmpty().WithMessage("تاریخ شروع اجباری است!")
+                .GreaterThanOrEqualTo(DateTime.Today).WithMessage("تاریخ شروع باید از امروز به بعد باشد!");
         }
     }
 }

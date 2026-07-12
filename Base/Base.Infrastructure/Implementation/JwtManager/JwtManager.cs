@@ -18,15 +18,10 @@ namespace Base.Infrastructure.Implementation
             var claims = new List<Claim>
             {
                 new Claim("userName", user.UserName),
+                new Claim("name", user.Name),
                 new Claim("id", user.Id.ToString()),
                 new Claim("role", user.Role),
              };
-
-            if (user.Role=="Student")
-            {
-                claims.Add(new Claim("iscompleted", user.IsProfileComplete.ToString()));
-
-            }
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration.GetValue<string>("JwtSettings:SecretKey")!));
@@ -134,6 +129,24 @@ namespace Base.Infrastructure.Implementation
                 var jwtSecurityToken = handler.ReadJwtToken(token);
 
                 var userName = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "userName").Value;
+                return userName;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public string GetName(string token = null)
+        {
+            try
+            {
+                token = token ?? GetToken();
+
+                var handler = new JwtSecurityTokenHandler();
+                var jwtSecurityToken = handler.ReadJwtToken(token);
+
+                var userName = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "name").Value;
                 return userName;
             }
             catch

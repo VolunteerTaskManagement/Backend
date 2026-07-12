@@ -58,6 +58,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (task.Status > VolunteerTaskStatus.Registered)
                 return Result.Failure("در مرحله ثبت فقط مجاز به ویرایش تسک هستید!");
 
+            if (task.StartDate.Date != request.StartDate.Date && request.StartDate.Date < DateTime.Now.Date)
+                return Result.Failure("تاریخ شروع باید از امروز به بعد باشد!");
+
             task.Count = request.Count;
             task.Title = request.Title;
             task.Skills = request.Skills;
