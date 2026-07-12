@@ -51,7 +51,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if(user == null) Result.NotFound("کاربر یافت نشد!");
 
             if (user!.PhoneNumber == null || user.NationalCode == null)
-                Result.Failure("پروفایل خود را ابتدا تکمیل کنید!");
+                return Result.Failure("پروفایل خود را ابتدا تکمیل کنید!");
 
             var task = new Domain.Entities.VolunteerTask()
             {
