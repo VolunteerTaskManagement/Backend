@@ -85,7 +85,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                         await Mediator.Send(new NotficationLogCreateCommand()
                         {
                             UsersId = [createdBy],
-                            Title = taskTitle
+                            Title = $" داوطلب '{userName}' در تسک '{taskTitle}' مشارکت کرد."
                         });
 
                         notificationHub?.SendNotification(
@@ -122,7 +122,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                         await Mediator.Send(new NotficationLogCreateCommand()
                         {
                             UsersId = [createdBy],
-                            Title = taskTitle
+                            Title = $"تسک '{taskTitle}' توسط '{userName}' تکمیل شد."
                         });
 
                         notificationHub?.SendNotification(
@@ -158,7 +158,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                         await Mediator.Send(new NotficationLogCreateCommand()
                         {
                             UsersId = [createdBy],
-                            Title = taskTitle
+                            Title = $" داوطلب '{userName}' از تسک '{taskTitle}' کناره‌گیری کرد."
                         });
 
                         notificationHub?.SendNotification(
@@ -187,7 +187,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                     await Mediator.Send(new NotficationLogCreateCommand()
                     {
                         UsersId = volunteersId,
-                        Title = res.Value
+                        Title = $"تسک '{res.Value}' شروع شد."
                     });
                     notificationHub?.SendNotification($"تسک '{res.Value}' شروع شد.", volunteersId);
                 }
@@ -212,7 +212,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                     await Mediator.Send(new NotficationLogCreateCommand()
                     {
                         UsersId = volunteersId,
-                        Title = res.Value
+                        Title = $"تسک '{res.Value}' تایید شد و به پایان رسید."
                     });
                     notificationHub?.SendNotification($"تسک '{res.Value}' تایید شد و به پایان رسید.", volunteersId);
                 }
@@ -239,7 +239,7 @@ namespace VolunteerTaskManagement.Api.Controllers
                     await Mediator.Send(new NotficationLogCreateCommand()
                     {
                         UsersId = volunteersId,
-                        Title = res.Value
+                        Title = $"تسک '{res.Value}' توسط هماهنگ‌کننده لغو شد."
                     });
                     notificationHub?.SendNotification($"تسک '{res.Value}' توسط هماهنگ‌کننده لغو شد.", volunteersId);
                 }
