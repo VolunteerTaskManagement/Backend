@@ -28,7 +28,8 @@ namespace VolunteerTaskManagement.Application.CQRS.NotficationLogs.Query.GetList
                     Id = notificationLog.Id,
                     UsersId = notificationLog.UsersId,
                     Title = notificationLog.Title,
-                    IsSeen = notificationLog.IsSeen
+                    IsSeen = notificationLog.IsSeen,
+                    CreateDate = notificationLog.CreateDate
                 });
                 notificationLog.IsSeen = true;
             }
