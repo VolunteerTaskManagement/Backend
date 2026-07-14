@@ -66,9 +66,36 @@ namespace VolunteerTaskManagement.Api.Controllers
         [HttpPost]
         [Authorize(Roles = "Volunteer")]
         [Route("assign")]
-        public async Task<ActionResult<Result>> Assign([FromBody] TaskAssignCommand command)
+        public async Task<ActionResult<Result<List<string>>>> Assign([FromBody] TaskAssignCommand command)
         {
             var res = await Mediator.Send(command);
+
+            if (res.IsSuccess)
+            {
+                var userName = jwtManager.GetName();
+
+                var data = res.Value;
+                if (data != null && data.Count >= 2)
+                {
+                    var taskTitle = data[0];
+                    var createdByStr = data[1] ?? "0";
+
+                    if (long.TryParse(createdByStr, out var createdBy))
+                    {
+                        await Mediator.Send(new NotficationLogCreateCommand()
+                        {
+                            UsersId = [createdBy],
+                            Title = $" داوطلب '{userName}' در تسک '{taskTitle}' مشارکت کرد."
+                        });
+
+                        notificationHub?.SendNotification(
+                            $" داوطلب '{userName}' در تسک '{taskTitle}' مشارکت کرد.",
+                            [createdBy]
+                        );
+                    }
+                }
+            }
+
             return Ok(res);
         }
 
@@ -95,11 +122,11 @@ namespace VolunteerTaskManagement.Api.Controllers
                         await Mediator.Send(new NotficationLogCreateCommand()
                         {
                             UsersId = [createdBy],
-                            Title = taskTitle
+                            Title = $"تسک '{taskTitle}' توسط '{userName}' تکمیل شد."
                         });
 
                         notificationHub?.SendNotification(
-                            $"تسک {taskTitle} توسط {userName} تکمیل شد.",
+                            $"تسک '{taskTitle}' توسط '{userName}' تکمیل شد.",
                             [createdBy]
                         );
                     }
@@ -113,7 +140,37 @@ namespace VolunteerTaskManagement.Api.Controllers
         [Authorize(Roles = "Volunteer")]
         [Route("unassign")]
         public async Task<ActionResult<Result>> Unassign([FromBody] TaskUnassignCommand command)
-            => Ok(await Mediator.Send(command));
+        {
+            var res = await Mediator.Send(command);
+
+            if (res.IsSuccess)
+            {
+                var userName = jwtManager.GetName();
+
+                var data = res.Value;
+                if (data != null && data.Count >= 2)
+                {
+                    var taskTitle = data[0];
+                    var createdByStr = data[1] ?? "0";
+
+                    if (long.TryParse(createdByStr, out var createdBy))
+                    {
+                        await Mediator.Send(new NotficationLogCreateCommand()
+                        {
+                            UsersId = [createdBy],
+                            Title = $" داوطلب '{userName}' از تسک '{taskTitle}' کناره‌گیری کرد."
+                        });
+
+                        notificationHub?.SendNotification(
+                            $" داوطلب '{userName}' از تسک '{taskTitle}' کناره‌گیری کرد.",
+                            [createdBy]
+                        );
+                    }
+                }
+            }
+
+            return Ok(res);
+        }
 
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
@@ -130,9 +187,9 @@ namespace VolunteerTaskManagement.Api.Controllers
                     await Mediator.Send(new NotficationLogCreateCommand()
                     {
                         UsersId = volunteersId,
-                        Title = res.Value
+                        Title = $"تسک '{res.Value}' شروع شد."
                     });
-                    notificationHub?.SendNotification($"تسک {res.Value} شروع شد.", volunteersId);
+                    notificationHub?.SendNotification($"تسک '{res.Value}' شروع شد.", volunteersId);
                 }
             }
 
@@ -155,9 +212,9 @@ namespace VolunteerTaskManagement.Api.Controllers
                     await Mediator.Send(new NotficationLogCreateCommand()
                     {
                         UsersId = volunteersId,
-                        Title = res.Value
+                        Title = $"تسک '{res.Value}' تایید شد و به پایان رسید."
                     });
-                    notificationHub?.SendNotification($"تسک {res.Value} تایید شد.", volunteersId);
+                    notificationHub?.SendNotification($"تسک '{res.Value}' تایید شد و به پایان رسید.", volunteersId);
                 }
             }
 
@@ -182,9 +239,9 @@ namespace VolunteerTaskManagement.Api.Controllers
                     await Mediator.Send(new NotficationLogCreateCommand()
                     {
                         UsersId = volunteersId,
-                        Title = res.Value
+                        Title = $"تسک '{res.Value}' توسط هماهنگ‌کننده لغو شد."
                     });
-                    notificationHub?.SendNotification($"تسک {res.Value} لغو شد.", volunteersId);
+                    notificationHub?.SendNotification($"تسک '{res.Value}' توسط هماهنگ‌کننده لغو شد.", volunteersId);
                 }
             }
 

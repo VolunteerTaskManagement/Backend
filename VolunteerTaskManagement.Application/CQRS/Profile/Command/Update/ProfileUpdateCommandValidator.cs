@@ -16,8 +16,8 @@ namespace VolunteerTaskManagement.Application.Profile.Command.Update
                 .Matches(@"^[\u0600-\u06FF\s]+$").WithMessage("نام خانوادگی باید فقط شامل حروف فارسی باشد!");
 
             RuleFor(x => x.PhoneNumber)
-                .NotEmpty().Matches(@"^09\d{9}$")
-                .WithMessage("شماره تلفن نامعتبر است");
+                .NotEmpty().WithMessage("شماره تلفن اجباری است.")
+                .Matches(@"^09\d{9}$").WithMessage("شماره تلفن نامعتبر است");
 
             When(x => jwtManager.GetRole() == "Volunteer", () =>
             {

@@ -7,15 +7,15 @@ using VolunteerTaskManagement.Domain.Entities;
 
 namespace VolunteerTaskManagement.Application.CQRS.Tasks
 {
-    public class TaskAssignCommand(long id) : IRequest<Result>
+    public class TaskAssignCommand(long id) : IRequest<Result<List<string>>>
     {
         public long Id { get; set; } = id;
     }
 
     public class TaskAssignCommandHandler(IVolunteerTaskManagementUnitOfWork uow, IJwtManager jwtManager)
-        : IRequestHandler<TaskAssignCommand, Result>
+        : IRequestHandler<TaskAssignCommand, Result<List<string>>>
     {
-        public async Task<Result> Handle(TaskAssignCommand request, CancellationToken cancellationToken)
+        public async Task<Result<List<string>>> Handle(TaskAssignCommand request, CancellationToken cancellationToken)
         {
             var userId = jwtManager.GetUserId();
 
@@ -30,16 +30,16 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 includes: x => x.Include(x => x.UserTasks)
                 );
             if (task == null)
-                return Result.NotFound("تسک مورد نظر یافت نشد!");
+                return Result.NotFound<List<string>>("تسک مورد نظر یافت نشد!");
 
             if (task.UserTasks?.Any(x => x.CreatedBy == user.Id) ?? false)
-                return Result.Failure("شماره در این تسک ثبت نام کرده‌اید!");
+                return Result.Failure<List<string>>(new Error("400", "شما قبلاً در این تسک ثبت‌نام کرده‌اید!"));
 
             if (task.Status != Domain.Enums.VolunteerTaskStatus.Registered)
-                return Result.Failure("ثبت نام در این مرحله امکان پذیر نیست!");
+                return Result.Failure<List<string>>(new Error("400", "امکان ثبت‌نام در این تسک وجود ندارد!"));
 
             if (task.VolunteerCount >= task.Count)
-                return Result.Failure("ظرفیت تسک به حد نصاب رسیده است!");
+                return Result.Failure<List<string>>(new Error("400", "ظرفیت تسک تکمیل شده است!"));
 
             task.VolunteerCount += 1;
 
@@ -52,7 +52,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             await uow.UserTasks.AddAsync(userTask);
             await uow.CommitAsync();
 
-            return Result.Success();
+            return Result.Success<List<string>>([task.Title, task.CreatedBy.ToString()!]);
         }
     }
 }

@@ -30,10 +30,11 @@ namespace VolunteerTaskManagement.Application.CQRS.NotficationLogs.Query.GetList
         /// </summary>
         public bool IsSeen { get; set; }
 
+        public DateTime CreateDate { get; set; }
         /// <summary>
         /// تاریخ ایجاد
         /// </summary>
-        public string? CreateDateFa { get; set; }
+        public string? CreateDateFa => CreateDate.ToPersianDateTime().ToString();
 
         public static Expression<Func<NotificationLog, NotificationLogListDTO>> Selector =>
             model => new NotificationLogListDTO
@@ -43,7 +44,7 @@ namespace VolunteerTaskManagement.Application.CQRS.NotficationLogs.Query.GetList
                 UsersId = model.UsersId,
                 Type = model.Type,
                 IsSeen = model.IsSeen,
-                CreateDateFa = model.CreateDate.ToPersianDateTime().ToString()
+                CreateDate = model.CreateDate
             };
     }
 }

@@ -51,6 +51,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             var sort = "id desc";
             var filter = request.GetFilter();
 
+            filter = filter.And(x => x.Status != VolunteerTaskStatus.Cancelled);
+
             var model = new ItemListDTO<TaskListDTO>
             {
                 PageSize = request.PageSize,
