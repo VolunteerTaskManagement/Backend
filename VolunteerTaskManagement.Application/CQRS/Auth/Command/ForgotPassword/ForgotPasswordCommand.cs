@@ -9,7 +9,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Auth
         public string UserName { get; set; }
     }
 
-    public class ForgotPasswordCommandHandler(IEmailService emailService, IRedisService redisService)
+    public class ForgotPasswordCommandHandler(/*IEmailService emailService, IRedisService redisService*/)
         : IRequestHandler<ForgotPasswordCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)

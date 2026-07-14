@@ -15,7 +15,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Auth
         public string ConfirmedNewPassword { get; set; }
     }
 
-    public class ChangeForgotPasswordCommandHandler(IRedisService redisService, IGenericRepository<User, IVolunteerTaskManagementContext> uow)
+    public class ChangeForgotPasswordCommandHandler(/*IRedisService redisService,*/ IGenericRepository<User, IVolunteerTaskManagementContext> uow)
         : IRequestHandler<ChangeForgotPasswordCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(ChangeForgotPasswordCommand request, CancellationToken cancellationToken)
