@@ -7,9 +7,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Auth.Command.ChangeForgotPass
     {
         public ChangeForgotPasswordCommandValidator()
         {
-            RuleFor(x => x.Email)
-                .EmailAddress().WithMessage("فرمت ایمیل درست نمیباشد!")
-                .NotEmpty().NotNull().WithMessage("ایمیل اجباری است!");
+            //RuleFor(x => x.Email)
+            //    .EmailAddress().WithMessage("فرمت ایمیل درست نمیباشد!")
+            //    .NotEmpty().NotNull().WithMessage("ایمیل اجباری است!");
 
             RuleFor(x => x.NewPassword)
                 .NotEmpty().WithMessage("رمز عبور الزامی است.")
