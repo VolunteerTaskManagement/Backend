@@ -39,21 +39,12 @@ namespace Base.Api.Registration
                     builder.AllowAnyMethod();
 
                 });
-                options.AddPolicy("chat", builder =>
+                options.AddPolicy("notif", builder =>
                 {
                     builder.SetIsOriginAllowed(_ => true)  // Temporary for testing
                        .AllowAnyHeader()
                        .AllowAnyMethod()
                        .AllowCredentials();
-                    //builder.WithOrigins("http://localhost:5173")
-                    //.AllowAnyHeader()
-                    //.AllowAnyMethod()
-                    //.AllowCredentials();
-
-                    //builder.WithOrigins("http://62.60.213.13")
-                    //.AllowAnyHeader()
-                    //.AllowAnyMethod()
-                    //.AllowCredentials();
                 });
             });
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 
@@ -11,13 +12,15 @@ using VolunteerTaskManagement.Infrastructure.Persistence.Context;
 namespace VolunteerTaskManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(VolunteerTaskManagementContext))]
-    partial class VolunteerTaskManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20260705230905_AddLatAndLngToTask")]
+    partial class AddLatAndLngToTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.9")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -98,46 +101,6 @@ namespace VolunteerTaskManagement.Infrastructure.Migrations
                     b.HasIndex("RegionId");
 
                     b.ToTable("Neighborhoods", "VolunteerTaskManagement");
-                });
-
-            modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.NotificationLog", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSeen")
-                        .HasColumnType("bit");
-
-                    b.Property<long?>("LastModifyBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("LastModifyDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("UsersId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NotificationLog");
                 });
 
             modelBuilder.Entity("VolunteerTaskManagement.Domain.Entities.Province", b =>

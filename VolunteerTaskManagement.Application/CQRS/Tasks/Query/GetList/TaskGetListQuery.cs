@@ -29,7 +29,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 filter.And(x => x.Title.Contains(Title));
 
             if (NeighborhoodIds.Count != 0)
-                filter.And(x => NeighborhoodIds.Contains(x.Id));
+                filter.And(x => NeighborhoodIds.Contains(x.NeighborhoodId));
 
             if (Skills.Count != 0)
                 filter.And(x => x.Skills.Any(s => Skills.Contains(s)));
@@ -50,6 +50,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             var userId = jwtManager.GetUserId();
             var sort = "id desc";
             var filter = request.GetFilter();
+
+            filter = filter.And(x => x.Status != VolunteerTaskStatus.Cancelled);
 
             var model = new ItemListDTO<TaskListDTO>
             {

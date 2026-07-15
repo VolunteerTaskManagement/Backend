@@ -1,4 +1,5 @@
 ﻿using Base.Utilities.Extensions;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Utilities;
 using VolunteerTaskManagement.Domain.Entities;
@@ -26,13 +27,19 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         public string? Address { get; set; }
 
         public DateTime StartDate { get; set; }
-        public string StartDateFa => StartDate.ToPersianDateTime().ToString();
+        public string StartDateFa => StartDate.ToPersianDateTime().ToShortDateString();
         public long NeighborhoodId { get; set; }
         public string? NeighborhoodTitle { get; set; }
         public bool IsAssigned { get; set; }
         public bool IsConfirmedByVolunteer { get; set; }
         public VolunteerTaskStatus Status { get; set; }
         public string StatusTitle => Status.GetDescription();
+
+        [Display(Name = "عرض جغرافیایی")]
+        public double Lat { get; set; }
+
+        [Display(Name = "طول جغرافیایی")]
+        public double Lng { get; set; }
 
         public static Expression<Func<VolunteerTask, TaskGetByIdDTO>> Selector(long userId, string role) =>
             model => new TaskGetByIdDTO
@@ -45,6 +52,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 Title = model.Title,
                 PicName = model.PicName,
                 Skills = model.Skills,
+                Lat = model.Lat,
+                Lng = model.Lng,
                 Status = model.Status,
                 Address = model.Address,
                 StartDate = model.StartDate,

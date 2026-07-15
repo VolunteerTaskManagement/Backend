@@ -31,6 +31,12 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
         [Display(Name = "تعداد افراد مورد نیاز")]
         public int Count { get; set; }
 
+        [Display(Name = "عرض جغرافیایی")]
+        public double Lat { get; set; }
+
+        [Display(Name = "طول جغرافیایی")]
+        public double Lng { get; set; }
+
         public string? Address { get; set; }
 
         public DateTime StartDate { get; set; }
@@ -46,6 +52,15 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             var task = await uow.Tasks.FirstOrDefaultAsync(x => x.Id == request.Id && x.CreatedBy == userId)
                 ?? throw new Exception("تسک مورد نظر یافت نشد!");
 
+            if (request.Count < task.VolunteerCount)
+                return Result.Failure("تعداد افراد مورد نیاز نمی‌تواند کمتر از تعداد افراد ثبت نام شده باشد!");
+
+            if (task.Status > VolunteerTaskStatus.Registered)
+                return Result.Failure("در مرحله ثبت فقط مجاز به ویرایش تسک هستید!");
+
+            if (task.StartDate.Date != request.StartDate.Date && request.StartDate.Date < DateTime.Now.Date)
+                return Result.Failure("تاریخ شروع باید از امروز به بعد باشد!");
+
             task.Count = request.Count;
             task.Title = request.Title;
             task.Skills = request.Skills;
@@ -53,6 +68,8 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             task.NeighborhoodId = request.NeighborhoodId;
             task.Address = request.Address;
             task.StartDate = request.StartDate;
+            task.Lat = request.Lat;
+            task.Lng = request.Lng;
 
             if (request.Pic != null)
             {

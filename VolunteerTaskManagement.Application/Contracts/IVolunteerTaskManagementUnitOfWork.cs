@@ -9,5 +9,6 @@ namespace VolunteerTaskManagement.Application.Contracts
         INeighborhoodRepository Neighborhoods { get; }
         ITaskRepository Tasks { get; }
         IUserTaskRepository UserTasks { get; }
+        INotificationLogRepository NotificationLogs { get; }
     }
 }

@@ -12,5 +12,6 @@ namespace VolunteerTaskManagement.Infrastructure.Implementation
         public INeighborhoodRepository Neighborhoods => serviceProvider.GetService<INeighborhoodRepository>();
         public ITaskRepository Tasks => serviceProvider.GetService<ITaskRepository>();
         public IUserTaskRepository UserTasks => serviceProvider.GetService<IUserTaskRepository>();
+        public INotificationLogRepository NotificationLogs => serviceProvider.GetService<INotificationLogRepository>();
     }
 }

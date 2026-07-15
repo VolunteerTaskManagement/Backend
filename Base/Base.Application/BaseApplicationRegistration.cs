@@ -26,6 +26,9 @@ namespace Base.Application
 
         public static void AddFluentValidation(this IServiceCollection service, Assembly assembly)
         {
+            ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+            ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
+
             service.AddValidatorsFromAssembly(assembly);
         }
 
