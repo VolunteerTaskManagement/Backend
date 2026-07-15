@@ -29,6 +29,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
                 x => x.Id == request.Id,
                 includes: x => x.Include(x => x.UserTasks)
                 );
+
             if (task == null)
                 return Result.NotFound<List<string>>("تسک مورد نظر یافت نشد!");
 
@@ -38,7 +39,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             if (task.Status != Domain.Enums.VolunteerTaskStatus.Registered)
                 return Result.Failure<List<string>>(new Error("400", "امکان ثبت‌نام در این تسک وجود ندارد!"));
 
-            if (task.VolunteerCount >= task.Count)
+            if (task.VolunteerCount >= task.Count
                 return Result.Failure<List<string>>(new Error("400", "ظرفیت تسک تکمیل شده است!"));
 
             task.VolunteerCount += 1;
@@ -50,7 +51,15 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks
             };
 
             await uow.UserTasks.AddAsync(userTask);
-            await uow.CommitAsync();
+
+            try
+            {
+                await uow.CommitAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Result.Failure("اطلاعات این تسک همزمان توسط کاربر دیگری تغییر کرده است. لطفاً مجدداً تلاش کنید.");
+            }
 
             return Result.Success<List<string>>([task.Title, task.CreatedBy.ToString()!]);
         }
