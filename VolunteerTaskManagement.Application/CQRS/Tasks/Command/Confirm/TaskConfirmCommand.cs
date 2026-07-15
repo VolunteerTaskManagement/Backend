@@ -6,7 +6,7 @@ using VolunteerTaskManagement.Application.Contracts;
 
 namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
 {
-    public class TaskConfirmCommand : IRequest<Result>
+    public class TaskConfirmCommand : IRequest<Result<string>>
     {
         public long Id { get; set; }
 
@@ -14,9 +14,9 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
 
     }
     public class TaskConfirmCommandHandler(IVolunteerTaskManagementUnitOfWork uow, IJwtManager jwtManager)
-        : IRequestHandler<TaskConfirmCommand, Result>
+        : IRequestHandler<TaskConfirmCommand, Result<string>>
     {
-        public async Task<Result> Handle(TaskConfirmCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(TaskConfirmCommand request, CancellationToken cancellationToken)
         {
             var userId = jwtManager.GetUserId();
 
@@ -31,7 +31,7 @@ namespace VolunteerTaskManagement.Application.CQRS.Tasks.Command.Confirm
             task.State.Confirm(task);
 
             await uow.CommitAsync();
-            return Result.Success();
+            return Result<string>.Success(task.Title);
 
         }
     }

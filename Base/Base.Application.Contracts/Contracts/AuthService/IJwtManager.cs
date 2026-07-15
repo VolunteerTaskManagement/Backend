@@ -11,5 +11,6 @@ namespace Base.Application.Contracts
         long? GetUserId(string token = null);
         string GetUserName(string token = null);
         string GetRole(string token = null);
+        string GetName(string token = null);
     }
 }
